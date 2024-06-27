@@ -14,11 +14,12 @@ import {
   Typography,
   Box,
   TextField,
-  IconButton,
+  InputAdornment,
 } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { styled } from "@mui/system";
 import { dummyDevices } from "./utils";
+import FilterIcon from "../../assests/icons/filterIcon";
+import SearchIcon from "@mui/icons-material/Search"; // Ensure this is the correct icon import
 
 const DeviceTable = () => {
   const [page, setPage] = useState(0);
@@ -35,7 +36,6 @@ const DeviceTable = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Offline":
       case "Failed":
         return "#CF1322";
       case "Cancelled":
@@ -79,7 +79,7 @@ const DeviceTable = () => {
   const CustomButton = styled(Button)({
     textTransform: "none",
     fontSize: "0.875rem",
-    fontWeight: "550",
+    fontWeight: "500",
     padding: "6px 8px",
     lineHeight: 1.5,
     border: "none",
@@ -88,6 +88,19 @@ const DeviceTable = () => {
     borderColor: "#d9d9d9",
     color: "#2D3540",
   });
+
+  const StyledTypography = styled(Typography)`
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+  `;
+
+  const StyledTableCell = styled(TableCell)`
+    border-bottom: none;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+  `;
 
   return (
     <Box p={3}>
@@ -106,17 +119,45 @@ const DeviceTable = () => {
         <StatusLabel label="14 Downloading" color="#1D81E3" />
         <StatusLabel label="32 Downloaded" color="#0D7C2D" />
       </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Box display="flex" alignItems="center" mb={2} style={{ gap: "16px" }}>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Search"
+            sx={{
+              width: "240px",
+              height: "32px",
+              borderRadius: "4px",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "#CFDCE5",
+                  borderRadius: "4px",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#CFDCE5",
+                },
+                "& input::placeholder": {
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  lineHeight: "24px",
+                  letterSpacing: "-0.2px",
+                  textAlign: "left",
+                  color: "#000", // Placeholder text color
+                },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon style={{ color: "#7D8A99" }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <FilterIcon />
+        </Box>
 
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-      >
-        <TextField variant="outlined" size="small" placeholder="Search" />
-        <IconButton>
-          <FilterListIcon />
-        </IconButton>
         <TablePagination
           component="div"
           count={dummyDevices.length}
@@ -131,7 +172,11 @@ const DeviceTable = () => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow style={{ borderBottom: "2px solid #CFDCE5" }}>
+            <TableRow
+              style={{
+                borderBottom: "1.5px solid #E6ECF0",
+              }}
+            >
               <TableCell>Device Serial</TableCell>
               <TableCell>Location</TableCell>
               <TableCell>Bandwidth</TableCell>
@@ -146,28 +191,35 @@ const DeviceTable = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((device) => (
                 <TableRow key={device.serialNo}>
+                  <StyledTableCell>{device.serialNo}</StyledTableCell>
                   <TableCell style={{ borderBottom: "none" }}>
-                    {device.serialNo}
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Typography>{device.theatreName}</Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <StyledTypography>{device.theatreName}</StyledTypography>
+                    <StyledTypography
+                      style={{ color: "#084782" }}
+                      variant="body2"
+                      color="textSecondary"
+                    >
                       {device.location.city}, {device.location.state},{" "}
                       {device.location.country}
-                    </Typography>
+                    </StyledTypography>
                   </TableCell>
                   <TableCell style={{ borderBottom: "none" }}>
-                    <Typography>{device.bandwidth}</Typography>
-                    <Typography variant="body2" color="textSecondary">
+                    <StyledTypography>{device.bandwidth}</StyledTypography>
+                    <StyledTypography
+                      variant="body2"
+                      style={{ color: "#69788C" }}
+                    >
                       {device.avgBandwidth}
-                    </Typography>
+                    </StyledTypography>
                   </TableCell>
                   <TableCell style={{ borderBottom: "none" }}>
                     <Box display="flex" alignItems="center">
                       <StatusCircle
                         color={getStatusColor(device.deviceStatus)}
                       />
-                      <Typography ml={1}>{device.deviceStatus}</Typography>
+                      <StyledTypography style={{ color: "#084782" }} ml={1}>
+                        {device.deviceStatus}
+                      </StyledTypography>
                     </Box>
                   </TableCell>
                   <TableCell style={{ borderBottom: "none" }}>
@@ -175,12 +227,12 @@ const DeviceTable = () => {
                       <StatusCircle
                         color={getStatusColor(device.downloadStatus)}
                       />
-                      <Typography ml={1}>{device.downloadStatus}</Typography>
+                      <StyledTypography style={{ color: "#084782" }} ml={1}>
+                        {device.downloadStatus}
+                      </StyledTypography>
                     </Box>
                   </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    {device.osVersion}
-                  </TableCell>
+                  <StyledTableCell>{device.osVersion}</StyledTableCell>
                   <TableCell style={{ borderBottom: "none" }}>
                     <CustomButton
                       component={Link}
