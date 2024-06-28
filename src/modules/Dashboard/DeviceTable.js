@@ -15,11 +15,19 @@ import {
   Box,
   TextField,
   InputAdornment,
+  Select,
+  MenuItem,
+  IconButton,
+  OutlinedInput,
 } from "@mui/material";
+
 import { styled } from "@mui/system";
-import { dummyDevices } from "./utils";
 import FilterIcon from "../../assests/icons/filterIcon";
-import SearchIcon from "@mui/icons-material/Search"; // Ensure this is the correct icon import
+import SearchIcon from "../../assests/icons/searchIcon";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { dummyDevices } from "./utils";
+import DrownArrowIcon from "../../assests/icons/downarrowIcon";
 
 const DeviceTable = () => {
   const [page, setPage] = useState(0);
@@ -87,6 +95,14 @@ const DeviceTable = () => {
     backgroundColor: "#E6ECF0",
     borderColor: "#d9d9d9",
     color: "#2D3540",
+    "&:hover": {
+      backgroundColor: "#DDE3E7", // One shade darker than #E6ECF0
+      borderColor: "#DDE3E7",
+    },
+    "&:active": {
+      color: "#1C4B8E", // Active text color
+      borderColor: "#1C4B8E", // Active border color
+    },
   });
 
   const StyledTypography = styled(Typography)`
@@ -102,6 +118,117 @@ const DeviceTable = () => {
     line-height: 20px;
   `;
 
+  const CustomPagination = () => {
+    const pageCount = Math.ceil(dummyDevices.length / rowsPerPage);
+
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-end"
+        sx={{ flexGrow: 1 }}
+      >
+        <Typography
+          style={{
+            fontSize: "12px",
+            color: "#69788C",
+            fontWeight: 500,
+            lineHeight: "20px",
+            letterSpacing: "-0.2px",
+            textAlign: "Right",
+          }}
+        >
+          Show
+        </Typography>
+        <Select
+          value={rowsPerPage}
+          onChange={handleChangeRowsPerPage}
+          input={<OutlinedInput notched={false} label="" />}
+          sx={{
+            marginLeft: "8px",
+            marginRight: "2px",
+            "& .MuiSelect-select": {
+              padding: "4px 12px",
+              paddingRight: "32px", // Adjust padding right to create space for the arrow
+              fontSize: "14px",
+              fontWeight: "400",
+              lineHeight: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between", // Ensure equal space around content
+            },
+            "& .MuiSelect-icon": {
+              top: "calc(50% - 12px)", // vertically center the icon
+              left: "35px", // Adjust to position the arrow correctly
+              position: "absolute",
+            },
+            "&.MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#CFDCE5",
+                borderWidth: "1.5px",
+              },
+              "&:hover fieldset": {
+                borderColor: "#CFDCE5",
+                borderWidth: "1.5px",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#CFDCE5",
+                borderWidth: "1.5px",
+              },
+            },
+          }}
+          variant="outlined"
+          size="small"
+        >
+          {[10, 25, 50].map((rows) => (
+            <MenuItem key={rows} value={rows}>
+              {rows}
+            </MenuItem>
+          ))}
+        </Select>
+        <IconButton
+          onClick={(e) => handleChangePage(e, page - 1)}
+          disabled={page === 0}
+        >
+          <KeyboardArrowLeft />
+        </IconButton>
+        {[...Array(pageCount).keys()].map((pageNum) => (
+          <Button
+            key={pageNum}
+            onClick={(e) => handleChangePage(e, pageNum)}
+            variant={pageNum === page ? "contained" : "text"}
+            sx={{
+              minWidth: "32px",
+              padding: "4px 8px",
+              borderRadius: "8px",
+              backgroundColor: pageNum === page ? "#E6F0FF" : "transparent",
+              color: pageNum === page ? "#084782" : "#2D3540",
+              border: pageNum === page ? "1px solid #084782" : "none",
+              "&:hover": {
+                backgroundColor: pageNum === page ? "#E6F0FF" : "transparent",
+              },
+              fontFamily: "Commissioner",
+              fontSize: "12px",
+              fontWeight: "500",
+              lineHeight: "20px",
+              letterSpacing: "-0.2px",
+              textAlign: "center",
+              background: pageNum === page ? "#E6F0FF" : "transparent",
+            }}
+          >
+            {pageNum + 1}
+          </Button>
+        ))}
+        <IconButton
+          onClick={(e) => handleChangePage(e, page + 1)}
+          disabled={page >= pageCount - 1}
+        >
+          <KeyboardArrowRight />
+        </IconButton>
+      </Box>
+    );
+  };
+
   return (
     <Box p={3}>
       <Typography
@@ -112,15 +239,15 @@ const DeviceTable = () => {
         Devices
       </Typography>
 
-      <Box display="flex" mb={2} alignItems="center">
+      <Box display="flex" alignItems="center">
         <StatusLabel label="1 Failed" color="#CF1322" />
         <StatusLabel label="1 Cancelled" color="#F0A203" />
         <StatusLabel label="1 Scheduled" color="#B2B2B2" />
         <StatusLabel label="14 Downloading" color="#1D81E3" />
         <StatusLabel label="32 Downloaded" color="#0D7C2D" />
       </Box>
-      <Box display="flex" justifyContent="space-between">
-        <Box display="flex" alignItems="center" mb={2} style={{ gap: "16px" }}>
+      <Box display="flex" justifyContent="space-between" pt={2} pb={2}>
+        <Box display="flex" alignItems="center" style={{ gap: "16px" }}>
           <TextField
             variant="outlined"
             size="small"
@@ -133,9 +260,15 @@ const DeviceTable = () => {
                 "& fieldset": {
                   borderColor: "#CFDCE5",
                   borderRadius: "4px",
+                  borderWidth: "1.5px",
+                },
+                "&:hover fieldset": {
+                  borderColor: "#CFDCE5",
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "#CFDCE5",
+                  borderRadius: "4px",
+                  borderWidth: "1.5px",
                 },
                 "& input::placeholder": {
                   fontSize: "14px",
@@ -143,30 +276,28 @@ const DeviceTable = () => {
                   lineHeight: "24px",
                   letterSpacing: "-0.2px",
                   textAlign: "left",
-                  color: "#000", // Placeholder text color
+                  color: "#69788C !important",
+                  opacity: 1,
+                },
+                "& input": {
+                  padding: "4px 8px",
+                  color: "#69788C !important",
                 },
               },
             }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <SearchIcon style={{ color: "#7D8A99" }} />
+                  <SearchIcon />
                 </InputAdornment>
               ),
             }}
           />
+
           <FilterIcon />
         </Box>
 
-        <TablePagination
-          component="div"
-          count={dummyDevices.length}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[10, 25, 50]}
-        />
+        <CustomPagination />
       </Box>
 
       <TableContainer component={Paper}>
