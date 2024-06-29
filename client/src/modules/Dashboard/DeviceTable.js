@@ -277,7 +277,10 @@ const DeviceTable = () => {
         <Box p={3}>
           <TableContainer
             component={Paper}
-            style={{ boxShadow: "0px 2px 2px 0px #0426520F" }}
+            style={{
+              boxShadow: "0px 2px 2px 0px #0426520F",
+              borderRadius: "8px",
+            }}
           >
             <Box
               display="flex"
