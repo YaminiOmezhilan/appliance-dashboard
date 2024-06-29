@@ -74,7 +74,7 @@ const DeviceDetail = () => {
                 textDecoration: "none",
                 fontSize: "12px",
                 fontWeight: 500,
-                lineHeight: "20px",
+                lineHeight: "27px",
                 letterSpacing: "-0.2px",
                 textAlign: "left",
                 color: "#69788C",
