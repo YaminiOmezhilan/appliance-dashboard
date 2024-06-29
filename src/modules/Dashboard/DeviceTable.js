@@ -1,4 +1,3 @@
-// src/DeviceTable.js
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -89,7 +88,7 @@ const DeviceTable = () => {
   );
 
   const StatusLabel = ({ label, color }) => (
-    <Box display="flex" alignItems="center" pt={2} pr={3} pb={2} pl={3}>
+    <Box display="flex" alignItems="center">
       <StatusCircle color={color} />
       <Typography
         ml={1}
@@ -208,158 +207,219 @@ const DeviceTable = () => {
   };
 
   return (
-    <Box p={3}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ fontSize: "28px", fontWeight: 500, lineHeight: "40px" }}
+    <>
+      <div style={{ height: "72px", backgroundColor: "white" }}>
+        <div
+          className="device-table-title"
+          style={{
+            position: "relative",
+            height: "40px",
+            padding: "16px 24px",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "Commissioner",
+              fontSize: "28px",
+              fontWeight: 500,
+              lineHeight: "40px",
+              letterSpacing: "-0.2px",
+              textAlign: "left",
+            }}
+          >
+            Devices
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          flexDirection: "column",
+          padding: "24px",
+          // height: "100%", // Removed to prevent enforcing a fixed height
+          overflowX: "auto", // Ensure horizontal scrolling is enabled if content exceeds width
+        }}
       >
-        Devices
-      </Typography>
-
-      <Box display="flex" alignItems="center" flexWrap="wrap">
-        {downloadStatusOverallFrequency &&
-          [...downloadStatusOverallFrequency].map(([key, value]) => (
-            <StatusLabel
-              key={key}
-              label={`${value} ${key}`}
-              color={getDownloadStatusColor(key)}
-            />
-          ))}
-      </Box>
-      <Box display="flex" justifyContent="space-between" pt={2} pb={2}>
-        <Box display="flex" alignItems="center" style={{ gap: "16px" }}>
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder="Search"
-            sx={{
-              width: "240px",
-              height: "32px",
-              borderRadius: "4px",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#CFDCE5",
-                  borderRadius: "4px",
-                  borderWidth: "1.5px",
-                },
-                "&:hover fieldset": {
-                  borderColor: "#CFDCE5",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#CFDCE5",
-                  borderRadius: "4px",
-                  borderWidth: "1.5px",
-                },
-                "& input::placeholder": {
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  lineHeight: "24px",
-                  letterSpacing: "-0.2px",
-                  textAlign: "left",
-                  color: "#69788C !important",
-                  opacity: 1,
-                },
-                "& input": {
-                  padding: "4.5px 8px",
-                  color: "#69788C !important",
-                },
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <FilterIcon />
-        </Box>
-
-        <CustomPagination />
-      </Box>
-
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow
-              style={{
-                borderBottom: "1.5px solid #E6ECF0",
-              }}
-            >
-              <TableCell>Device Serial</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Bandwidth</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Download Status</TableCell>
-              <TableCell>OS Version</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {appliances
-              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              ?.map((device) => (
-                <TableRow key={device?.serialNo}>
-                  <StyledTableCell>{device?.serialNo}</StyledTableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <StyledTypography>{device?.theatreName}</StyledTypography>
-                    <StyledTypography
-                      style={{ color: "#084782" }}
-                      variant="body2"
-                      color="textSecondary"
-                    >
-                      {device.location.city}, {device.location.state},{" "}
-                      {device.location.country}
-                    </StyledTypography>
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <StyledTypography>{device.bandwidth}</StyledTypography>
-                    <StyledTypography
-                      variant="body2"
-                      style={{ color: "#69788C" }}
-                    >
-                      {device.avgBandwidth}
-                    </StyledTypography>
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Box display="flex" alignItems="center">
-                      <StatusCircle
-                        color={getDeviceStatusColor(device.deviceStatus)}
-                      />
-                      <StyledTypography style={{ color: "#084782" }} ml={1}>
-                        {device.deviceStatus}
-                      </StyledTypography>
-                    </Box>
-                  </TableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <Box display="flex" alignItems="center">
-                      <StatusCircle
-                        color={getDownloadStatusColor(device.downloadStatus)}
-                      />
-                      <StyledTypography style={{ color: "#084782" }} ml={1}>
-                        {device.downloadStatus}
-                      </StyledTypography>
-                    </Box>
-                  </TableCell>
-                  <StyledTableCell>{device.osVersion}</StyledTableCell>
-                  <TableCell style={{ borderBottom: "none" }}>
-                    <CustomButton
-                      component={Link}
-                      to={`/device/${device.serialNo}`}
-                      variant="outlined"
-                    >
-                      View
-                    </CustomButton>
-                  </TableCell>
-                </TableRow>
+        <div
+          style={{
+            padding: "16px 24px 16px 24px",
+            height: "24px",
+            gap: "4px",
+          }}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            flexWrap="wrap"
+            backgroundColor="#fff"
+            borderRadius="8px"
+            gap="16px"
+            mb={2}
+            pt={2}
+            pr={3}
+            pb={2}
+            pl={3}
+          >
+            {downloadStatusOverallFrequency &&
+              [...downloadStatusOverallFrequency].map(([key, value]) => (
+                <StatusLabel
+                  key={key}
+                  label={`${value} ${key}`}
+                  color={getDownloadStatusColor(key)}
+                />
               ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+          </Box>
+        </div>
+        <Box p={3}>
+          <TableContainer
+            component={Paper}
+            style={{ boxShadow: "0px 2px 2px 0px #0426520F" }}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              pt={2}
+              pb={2}
+              alignItems="center"
+              style={{ padding: "16px", height: "32px" }}
+            >
+              <Box display="flex" alignItems="center" style={{ gap: "16px" }}>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search"
+                  sx={{
+                    width: "240px",
+                    height: "32px",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#CFDCE5",
+                        borderRadius: "4px",
+                        borderWidth: "1.5px",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#CFDCE5",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#CFDCE5",
+                        borderRadius: "4px",
+                        borderWidth: "1.5px",
+                      },
+                      "& input::placeholder": {
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        lineHeight: "24px",
+                        letterSpacing: "-0.2px",
+                        textAlign: "left",
+                        color: "#69788C !important",
+                        opacity: 1,
+                      },
+                      "& input": {
+                        padding: "4.5px 8px",
+                        color: "#69788C !important",
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <FilterIcon />
+              </Box>
+
+              <CustomPagination />
+            </Box>
+            <Table>
+              <TableHead>
+                <TableRow
+                  style={{
+                    borderBottom: "1.5px solid #E6ECF0",
+                  }}
+                >
+                  <TableCell>Device Serial</TableCell>
+                  <TableCell>Location</TableCell>
+                  <TableCell>Bandwidth</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Download Status</TableCell>
+                  <TableCell>OS Version</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {appliances
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((device) => (
+                    <TableRow key={device?.serialNo}>
+                      <StyledTableCell>{device?.serialNo}</StyledTableCell>
+                      <TableCell style={{ borderBottom: "none" }}>
+                        <StyledTypography>
+                          {device?.theatreName}
+                        </StyledTypography>
+                        <StyledTypography
+                          style={{ color: "#084782" }}
+                          variant="body2"
+                          color="textSecondary"
+                        >
+                          {device.location.city}, {device.location.state},{" "}
+                          {device.location.country}
+                        </StyledTypography>
+                      </TableCell>
+                      <TableCell style={{ borderBottom: "none" }}>
+                        <StyledTypography>{device.bandwidth}</StyledTypography>
+                        <StyledTypography
+                          variant="body2"
+                          style={{ color: "#69788C" }}
+                        >
+                          {device.avgBandwidth}
+                        </StyledTypography>
+                      </TableCell>
+                      <TableCell style={{ borderBottom: "none" }}>
+                        <Box display="flex" alignItems="center">
+                          <StatusCircle
+                            color={getDeviceStatusColor(device.deviceStatus)}
+                          />
+                          <StyledTypography style={{ color: "#084782" }} ml={1}>
+                            {device.deviceStatus}
+                          </StyledTypography>
+                        </Box>
+                      </TableCell>
+                      <TableCell style={{ borderBottom: "none" }}>
+                        <Box display="flex" alignItems="center">
+                          <StatusCircle
+                            color={getDownloadStatusColor(
+                              device.downloadStatus
+                            )}
+                          />
+                          <StyledTypography style={{ color: "#084782" }} ml={1}>
+                            {device.downloadStatus}
+                          </StyledTypography>
+                        </Box>
+                      </TableCell>
+                      <StyledTableCell>{device.osVersion}</StyledTableCell>
+                      <TableCell style={{ borderBottom: "none" }}>
+                        <CustomButton
+                          component={Link}
+                          to={`/device/${device.serialNo}`}
+                          variant="outlined"
+                        >
+                          View
+                        </CustomButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </div>
+    </>
   );
 };
 

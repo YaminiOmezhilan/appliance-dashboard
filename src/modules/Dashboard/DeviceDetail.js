@@ -60,8 +60,6 @@ const DeviceDetail = () => {
         <div
           style={{
             position: "absolute",
-            width: "1290px",
-            height: "32px",
             padding: "11px 32px",
             boxSizing: "border-box",
           }}
