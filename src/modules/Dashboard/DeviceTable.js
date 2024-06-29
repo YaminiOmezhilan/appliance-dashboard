@@ -14,10 +14,7 @@ import {
   Box,
   TextField,
   InputAdornment,
-  Select,
-  MenuItem,
   IconButton,
-  OutlinedInput,
 } from "@mui/material";
 
 import { styled } from "@mui/system";
@@ -26,6 +23,7 @@ import SearchIcon from "../../assests/icons/searchIcon";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { getDeviceStatusColor, getDownloadStatusFrequency } from "./utils";
+import CustomSelect from "../../assests/custom/CustomSelect";
 
 const DeviceTable = () => {
   const [page, setPage] = useState(0);
@@ -160,52 +158,14 @@ const DeviceTable = () => {
         >
           Show
         </Typography>
-        <Select
+        <CustomSelect
           value={rowsPerPage}
           onChange={handleChangeRowsPerPage}
-          input={<OutlinedInput notched={false} label="" />}
-          sx={{
-            marginLeft: "8px",
-            marginRight: "2px",
-            "& .MuiSelect-select": {
-              padding: "4px 12px",
-              paddingRight: "32px", // Adjust padding right to create space for the arrow
-              fontSize: "14px",
-              fontWeight: "400",
-              lineHeight: "20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between", // Ensure equal space around content
-            },
-            "& .MuiSelect-icon": {
-              top: "calc(50% - 12px)", // vertically center the icon
-              left: "35px", // Adjust to position the arrow correctly
-              position: "absolute",
-            },
-            "&.MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#CFDCE5",
-                borderWidth: "1.5px",
-              },
-              "&:hover fieldset": {
-                borderColor: "#CFDCE5",
-                borderWidth: "1.5px",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#CFDCE5",
-                borderWidth: "1.5px",
-              },
-            },
-          }}
-          variant="outlined"
-          size="small"
-        >
-          {[10, 25, 50].map((rows) => (
-            <MenuItem key={rows} value={rows}>
-              {rows}
-            </MenuItem>
-          ))}
-        </Select>
+          rowsPerPageOptions={[10, 25, 50]}
+          width="69.58px"
+          height="32px"
+          gap="4px"
+        />
         <IconButton
           onClick={(e) => handleChangePage(e, page - 1)}
           disabled={page === 0}
