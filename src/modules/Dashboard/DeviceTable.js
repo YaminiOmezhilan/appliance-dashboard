@@ -31,17 +31,15 @@ const DeviceTable = () => {
   const [appliances, setAppliances] = useState([]);
   const downloadStatusOverallFrequency =
     appliances && getDownloadStatusFrequency(appliances);
-  console.log("downloadStatusOverallFrequency", downloadStatusOverallFrequency);
 
   useEffect(() => {
     async function fetchAppliances() {
       try {
         const response = await fetch("http://localhost:5000/api/v1/appliances");
         const data = await response.json();
-        //console.log("Appliances data received:", data);
         setAppliances(data);
       } catch (error) {
-        //console.error("Error fetching appliances:", error);
+        console.debug("[Error] error fetching appliances data", error);
       }
     }
 

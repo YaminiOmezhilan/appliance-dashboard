@@ -56,12 +56,16 @@ const DeviceDetail = () => {
 
   return (
     <>
-      <Container
-        sx={{
-          padding: "0px 24px",
-        }}
-      >
-        <Box mt={3} mb={2}>
+      <div style={{ height: "48px", width: "100%" }}>
+        <div
+          style={{
+            position: "absolute",
+            width: "1290px",
+            height: "32px",
+            padding: "11px 32px",
+            boxSizing: "border-box",
+          }}
+        >
           <Breadcrumbs
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
@@ -78,8 +82,6 @@ const DeviceDetail = () => {
                 letterSpacing: "-0.2px",
                 textAlign: "left",
                 color: "#69788C",
-                paddingTop: "6px",
-                paddingBottom: "6px",
               }}
             >
               Devices
@@ -97,7 +99,18 @@ const DeviceDetail = () => {
               {applianceInfo ? applianceInfo["Device Serial"] : undefined}
             </Typography>
           </Breadcrumbs>
-        </Box>
+        </div>
+      </div>
+      <Container
+        sx={{
+          padding: "0px 24px",
+        }}
+        style={{
+          backgroundColor: "#FFFFFF",
+          height: "192px",
+          padding: "12px 24px 0px 24px",
+        }}
+      >
         <Box display="flex" justifyContent="space-between">
           <Typography
             variant="h4"
@@ -213,10 +226,11 @@ const DeviceDetail = () => {
         <Card
           sx={{
             padding: "0px",
+            boxShadow: "0px 2px 2px 0px #0426520F",
           }}
         >
           <CardContent sx={{ padding: 0 }}>
-            {applianceInfo && ( // Check if appliance is not null or undefined
+            {applianceInfo && (
               <Grid container spacing={3} sx={{ pt: 3, pl: 3, pr: 3 }}>
                 {Object.entries(applianceInfo).map(([key, value]) => (
                   <Grid item xs={12} sm={6} md={3} key={key}>

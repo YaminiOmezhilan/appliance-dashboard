@@ -6,7 +6,6 @@ const port = 5000;
 
 app.use(cors());
 app.get("/api/v1/appliances", (req, res) => {
-  console.log("GET /api/v1/appliances called", appliances);
   const briefAppliances = appliances.map((appliance) => {
     const {
       ispPaymentResponsibility,
