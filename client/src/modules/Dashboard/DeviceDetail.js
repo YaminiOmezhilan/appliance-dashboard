@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
-  Grid,
-  Typography,
-  Card,
-  CardContent,
-  Chip,
-  Box,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import SpeedTestIcon from "../../assets/icons/speedTestIcon";
-import LogsIcon from "../../assets/icons/logsIcon";
+  TabStyle,
+  RootDiv,
+  BreadcrumbDiv,
+  StyledBreadcrumbs,
+  StyledLink,
+  StyledContainer,
+  FlexBox,
+  InlineTypography,
+  IconBox,
+  DetailsBox,
+  BottomBorderBox,
+  CardContainer,
+  StyledCard,
+  StyledCardContent,
+  StyledGrid,
+} from "./styles/styles";
+
+import { Grid, Typography, Chip, Box as MuiBox } from "@mui/material";
+import SpeedTestIcon from "../../assets/icons/SpeedTestIcon";
+import LogsIcon from "../../assets/icons/LogIcon";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import StatusIcon from "../../assets/icons/statusIcon";
-import PieChartIcon from "../../assets/icons/piechartIcon";
+import StatusIcon from "../../assets/icons/StatusIcon";
+import PieChartIcon from "../../assets/icons/PieChartIcon";
 import {
   getDeviceStatusColor,
   convertToApplianceDetailsPageFormat,
@@ -28,6 +35,7 @@ const DeviceDetail = () => {
   const applianceInfo = appliance
     ? convertToApplianceDetailsPageFormat(appliance)
     : undefined;
+
   useEffect(() => {
     const fetchAppliance = async () => {
       try {
@@ -47,45 +55,17 @@ const DeviceDetail = () => {
     fetchAppliance();
   }, [serialNo]);
 
-  const TabStyle = styled(Typography)({
-    fontSize: "14px",
-    fontWeight: 500,
-    lineHeight: "24px",
-    letterSpacing: "-0.2px",
-    color: "#69788C",
-    padding: "8px 12px 8px 12px",
-  });
-
   return (
     <>
-      <div style={{ height: "48px", width: "100%" }}>
-        <div
-          style={{
-            position: "absolute",
-            padding: "11px 32px",
-            boxSizing: "border-box",
-          }}
-        >
-          <Breadcrumbs
+      <RootDiv>
+        <BreadcrumbDiv>
+          <StyledBreadcrumbs
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
-            sx={{ color: "#69788C" }}
           >
-            <Link
-              color="inherit"
-              href="/"
-              sx={{
-                textDecoration: "none",
-                fontSize: "12px",
-                fontWeight: 500,
-                lineHeight: "27px",
-                letterSpacing: "-0.2px",
-                textAlign: "left",
-                color: "#69788C",
-              }}
-            >
+            <StyledLink color="inherit" href="/">
               Devices
-            </Link>
+            </StyledLink>
             <Typography
               sx={{
                 fontSize: "12px",
@@ -98,45 +78,20 @@ const DeviceDetail = () => {
             >
               {applianceInfo ? applianceInfo["Device Serial"] : undefined}
             </Typography>
-          </Breadcrumbs>
-        </div>
-      </div>
-      <Container
-        sx={{
-          padding: "0px 24px",
-        }}
-        style={{
-          backgroundColor: "#FFFFFF",
-          height: "192px",
-          padding: "12px 24px 0px 24px",
-        }}
-      >
-        <Box display="flex" justifyContent="space-between">
-          <Typography
-            variant="h4"
-            sx={{
-              fontSize: "28px",
-              fontWeight: 400,
-              lineHeight: "40px",
-              letterSpacing: "-0.2px",
-              textAlign: "left",
-              color: "#2D3540",
-              display: "inline-block",
-            }}
-          >
+          </StyledBreadcrumbs>
+        </BreadcrumbDiv>
+      </RootDiv>
+      <StyledContainer>
+        <FlexBox>
+          <InlineTypography variant="h4">
             {applianceInfo ? applianceInfo["Device Serial"] : undefined}
-          </Typography>{" "}
-          <Box
-            display="flex"
-            alignItems="center"
-            mb={2}
-            style={{ gap: "16px" }}
-          >
+          </InlineTypography>
+          <IconBox>
             <SpeedTestIcon />
             <LogsIcon />
-          </Box>
-        </Box>
-        <Box>
+          </IconBox>
+        </FlexBox>
+        <MuiBox>
           <Typography
             variant="subtitle1"
             sx={{
@@ -164,7 +119,7 @@ const DeviceDetail = () => {
             {applianceInfo ? applianceInfo["City"] : undefined}
           </Typography>
 
-          <Box mt={1} mb={1} display="flex" alignItems="center" gap={1}>
+          <DetailsBox>
             <Chip
               icon={
                 <StatusIcon
@@ -203,39 +158,25 @@ const DeviceDetail = () => {
                 height: "auto",
               }}
             />
-          </Box>
-        </Box>
+          </DetailsBox>
+        </MuiBox>
 
-        <Box
-          style={{
-            borderBottom: "2px solid #F5F8FA",
-          }}
-        ></Box>
+        <BottomBorderBox></BottomBorderBox>
 
-        <Box display="flex" alignItems="center">
+        <MuiBox display="flex" alignItems="center">
           <TabStyle variant="body1">Details</TabStyle>
           <TabStyle variant="body1">Content</TabStyle>
           <TabStyle variant="body1">Bandwidth</TabStyle>
-        </Box>
-      </Container>
-      <Container
-        sx={{
-          padding: "24px",
-        }}
-      >
-        <Card
-          sx={{
-            padding: "0px",
-            boxShadow: "0px 2px 2px 0px #0426520F",
-            borderRadius: "8px",
-          }}
-        >
-          <CardContent sx={{ padding: 0 }}>
+        </MuiBox>
+      </StyledContainer>
+      <CardContainer>
+        <StyledCard>
+          <StyledCardContent>
             {applianceInfo && (
-              <Grid container spacing={3} sx={{ pt: 3, pl: 3, pr: 3 }}>
+              <StyledGrid container spacing={3}>
                 {Object.entries(applianceInfo).map(([key, value]) => (
                   <Grid item xs={12} sm={6} md={3} key={key}>
-                    <Box display="flex" flexDirection="column">
+                    <MuiBox display="flex" flexDirection="column">
                       <Typography
                         variant="body2"
                         sx={{
@@ -263,14 +204,14 @@ const DeviceDetail = () => {
                           ? JSON.stringify(value)
                           : value}
                       </Typography>
-                    </Box>
+                    </MuiBox>
                   </Grid>
                 ))}
-              </Grid>
+              </StyledGrid>
             )}
-          </CardContent>
-        </Card>
-      </Container>
+          </StyledCardContent>
+        </StyledCard>
+      </CardContainer>
     </>
   );
 };

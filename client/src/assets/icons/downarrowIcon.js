@@ -1,8 +1,6 @@
-// MyIcon.js
-
 import React from "react";
 
-const DrownArrowIcon = () => {
+const DownArrowIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -31,4 +29,4 @@ const DrownArrowIcon = () => {
   );
 };
 
-export default DrownArrowIcon;
+export default DownArrowIcon;

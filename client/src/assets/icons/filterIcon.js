@@ -1,5 +1,3 @@
-// MyIcon.js
-
 import React from "react";
 
 const FilterIcon = () => {

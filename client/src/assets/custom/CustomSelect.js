@@ -34,7 +34,7 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   "& .MuiSelect-icon": {
     top: "50%",
     transform: "translateY(-50%)",
-    right: "8px", // Adjust right positioning to match your layout
+    right: "8px",
     position: "absolute",
   },
   "&.MuiOutlinedInput-root": {
