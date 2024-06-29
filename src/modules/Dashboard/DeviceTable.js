@@ -1,5 +1,5 @@
 // src/DeviceTable.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Table,
@@ -10,7 +10,6 @@ import {
   TableRow,
   Paper,
   Button,
-  TablePagination,
   Typography,
   Box,
   TextField,
@@ -26,12 +25,30 @@ import FilterIcon from "../../assests/icons/filterIcon";
 import SearchIcon from "../../assests/icons/searchIcon";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import { dummyDevices } from "./utils";
-import DrownArrowIcon from "../../assests/icons/downarrowIcon";
+import { getDeviceStatusColor, getDownloadStatusFrequency } from "./utils";
 
 const DeviceTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [appliances, setAppliances] = useState([]);
+  const downloadStatusOverallFrequency =
+    appliances && getDownloadStatusFrequency(appliances);
+  console.log("downloadStatusOverallFrequency", downloadStatusOverallFrequency);
+
+  useEffect(() => {
+    async function fetchAppliances() {
+      try {
+        const response = await fetch("http://localhost:5000/api/v1/appliances");
+        const data = await response.json();
+        //console.log("Appliances data received:", data);
+        setAppliances(data);
+      } catch (error) {
+        //console.error("Error fetching appliances:", error);
+      }
+    }
+
+    fetchAppliances();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,13 +59,16 @@ const DeviceTable = () => {
     setPage(0);
   };
 
-  const getStatusColor = (status) => {
+  const getDownloadStatusColor = (status) => {
     switch (status) {
       case "Failed":
+      case "Stalled":
+      case "Archived":
         return "#CF1322";
       case "Cancelled":
         return "#F0A203";
       case "Downloading":
+      case "Unarchiving":
         return "#1D81E3";
       case "Scheduled":
         return "#B2B2B2";
@@ -73,7 +93,7 @@ const DeviceTable = () => {
   );
 
   const StatusLabel = ({ label, color }) => (
-    <Box display="flex" alignItems="center" mr={2} pt={2} pr={3} pb={2} pl={3}>
+    <Box display="flex" alignItems="center" pt={2} pr={3} pb={2} pl={3}>
       <StatusCircle color={color} />
       <Typography
         ml={1}
@@ -119,7 +139,7 @@ const DeviceTable = () => {
   `;
 
   const CustomPagination = () => {
-    const pageCount = Math.ceil(dummyDevices.length / rowsPerPage);
+    const pageCount = Math.ceil(appliances.length / rowsPerPage);
 
     return (
       <Box
@@ -239,12 +259,15 @@ const DeviceTable = () => {
         Devices
       </Typography>
 
-      <Box display="flex" alignItems="center">
-        <StatusLabel label="1 Failed" color="#CF1322" />
-        <StatusLabel label="1 Cancelled" color="#F0A203" />
-        <StatusLabel label="1 Scheduled" color="#B2B2B2" />
-        <StatusLabel label="14 Downloading" color="#1D81E3" />
-        <StatusLabel label="32 Downloaded" color="#0D7C2D" />
+      <Box display="flex" alignItems="center" flexWrap="wrap">
+        {downloadStatusOverallFrequency &&
+          [...downloadStatusOverallFrequency].map(([key, value]) => (
+            <StatusLabel
+              key={key}
+              label={`${value} ${key}`}
+              color={getDownloadStatusColor(key)}
+            />
+          ))}
       </Box>
       <Box display="flex" justifyContent="space-between" pt={2} pb={2}>
         <Box display="flex" alignItems="center" style={{ gap: "16px" }}>
@@ -280,7 +303,7 @@ const DeviceTable = () => {
                   opacity: 1,
                 },
                 "& input": {
-                  padding: "4px 8px",
+                  padding: "4.5px 8px",
                   color: "#69788C !important",
                 },
               },
@@ -318,13 +341,13 @@ const DeviceTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dummyDevices
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((device) => (
-                <TableRow key={device.serialNo}>
-                  <StyledTableCell>{device.serialNo}</StyledTableCell>
+            {appliances
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ?.map((device) => (
+                <TableRow key={device?.serialNo}>
+                  <StyledTableCell>{device?.serialNo}</StyledTableCell>
                   <TableCell style={{ borderBottom: "none" }}>
-                    <StyledTypography>{device.theatreName}</StyledTypography>
+                    <StyledTypography>{device?.theatreName}</StyledTypography>
                     <StyledTypography
                       style={{ color: "#084782" }}
                       variant="body2"
@@ -346,7 +369,7 @@ const DeviceTable = () => {
                   <TableCell style={{ borderBottom: "none" }}>
                     <Box display="flex" alignItems="center">
                       <StatusCircle
-                        color={getStatusColor(device.deviceStatus)}
+                        color={getDeviceStatusColor(device.deviceStatus)}
                       />
                       <StyledTypography style={{ color: "#084782" }} ml={1}>
                         {device.deviceStatus}
@@ -356,7 +379,7 @@ const DeviceTable = () => {
                   <TableCell style={{ borderBottom: "none" }}>
                     <Box display="flex" alignItems="center">
                       <StatusCircle
-                        color={getStatusColor(device.downloadStatus)}
+                        color={getDownloadStatusColor(device.downloadStatus)}
                       />
                       <StyledTypography style={{ color: "#084782" }} ml={1}>
                         {device.downloadStatus}

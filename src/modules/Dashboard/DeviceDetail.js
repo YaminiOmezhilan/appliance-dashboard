@@ -1,5 +1,4 @@
-// src/DeviceDetails.js
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Grid,
@@ -17,23 +16,34 @@ import LogsIcon from "../../assests/icons/logsIcon";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import StatusIcon from "../../assests/icons/statusIcon";
 import PieChartIcon from "../../assests/icons/piechartIcon";
-import { data } from "./utils";
+import { convertToApplianceDetailsPageFormatFormat } from "./utils";
+import { getDeviceStatusColor } from "./utils";
+import { useParams } from "react-router-dom";
 
 const DeviceDetail = () => {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Failed":
-        return "#CF1322";
-      case "Cancelled":
-        return "#F0A203";
-      case "Downloading":
-        return "#1D81E3";
-      case "Scheduled":
-        return "#B2B2B2";
-      default:
-        return "#0D7C2D";
-    }
-  };
+  const { serialNo } = useParams();
+  const [appliance, setAppliance] = useState(null);
+  const applianceInfo = appliance
+    ? convertToApplianceDetailsPageFormatFormat(appliance)
+    : undefined;
+  useEffect(() => {
+    const fetchAppliance = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/v1/appliance/${serialNo}/info`
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setAppliance(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+
+    fetchAppliance();
+  }, [serialNo]);
 
   const TabStyle = styled(Typography)({
     fontSize: "14px",
@@ -84,7 +94,7 @@ const DeviceDetail = () => {
                 color: "#2D3540",
               }}
             >
-              JTD-912312
+              {applianceInfo ? applianceInfo["Device Serial"] : undefined}
             </Typography>
           </Breadcrumbs>
         </Box>
@@ -101,7 +111,7 @@ const DeviceDetail = () => {
               display: "inline-block",
             }}
           >
-            JTD-912312
+            {applianceInfo ? applianceInfo["Device Serial"] : undefined}
           </Typography>{" "}
           <Box
             display="flex"
@@ -125,7 +135,7 @@ const DeviceDetail = () => {
               color: "#2D3540",
             }}
           >
-            Cross River Mall
+            {applianceInfo ? applianceInfo["Location"] : undefined}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -138,13 +148,19 @@ const DeviceDetail = () => {
               color: "#69788C",
             }}
           >
-            New Delhi, Delhi, India
+            {applianceInfo ? applianceInfo["City"] : undefined}
           </Typography>
 
           <Box mt={1} mb={1} display="flex" alignItems="center" gap={1}>
             <Chip
-              icon={<StatusIcon color={getStatusColor("Online")} />}
-              label={"Online"}
+              icon={
+                <StatusIcon
+                  color={getDeviceStatusColor(
+                    appliance ? appliance["deviceStatus"] : "Online"
+                  )}
+                />
+              }
+              label={appliance ? appliance["deviceStatus"] : "Online"}
               sx={{
                 backgroundColor: "#E6ECF0",
                 color: "#2D3540",
@@ -159,7 +175,9 @@ const DeviceDetail = () => {
             />
             <Chip
               icon={<PieChartIcon />}
-              label={"828 GB"}
+              label={
+                applianceInfo ? applianceInfo["Storage Available"] : undefined
+              }
               sx={{
                 backgroundColor: "#E6ECF0",
                 color: "#2D3540",
@@ -198,39 +216,43 @@ const DeviceDetail = () => {
           }}
         >
           <CardContent sx={{ padding: 0 }}>
-            <Grid container spacing={3} sx={{ pt: 3, pl: 3, pr: 3 }}>
-              {data.map((item, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <Box display="flex" flexDirection="column">
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: "#2D3540",
-                        fontSize: "12px",
-                        fontWeight: 500,
-                        lineHeight: "20px",
-                        letterSpacing: "-0.2px",
-                      }}
-                    >
-                      {item.label}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "24px",
-                        letterSpacing: "-0.2px",
-                        textAlign: "left",
-                        color: "#2D3540",
-                      }}
-                    >
-                      {item.value}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+            {applianceInfo && ( // Check if appliance is not null or undefined
+              <Grid container spacing={3} sx={{ pt: 3, pl: 3, pr: 3 }}>
+                {Object.entries(applianceInfo).map(([key, value]) => (
+                  <Grid item xs={12} sm={6} md={3} key={key}>
+                    <Box display="flex" flexDirection="column">
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#2D3540",
+                          fontSize: "12px",
+                          fontWeight: 500,
+                          lineHeight: "20px",
+                          letterSpacing: "-0.2px",
+                        }}
+                      >
+                        {key}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: 400,
+                          lineHeight: "24px",
+                          letterSpacing: "-0.2px",
+                          textAlign: "left",
+                          color: "#2D3540",
+                        }}
+                      >
+                        {typeof value === "object"
+                          ? JSON.stringify(value)
+                          : value}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </CardContent>
         </Card>
       </Container>
