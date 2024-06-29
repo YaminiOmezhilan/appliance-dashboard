@@ -21,7 +21,10 @@ import FilterIcon from "../../assets/icons/filterIcon";
 import SearchIcon from "../../assets/icons/searchIcon";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import { getDeviceStatusColor, getDownloadStatusFrequency } from "./utils";
+import {
+  getDeviceStatusColor,
+  getDownloadStatusFrequency,
+} from "../utils/dashboardUtils";
 import CustomSelect from "../../assets/custom/CustomSelect";
 
 const DeviceTable = () => {

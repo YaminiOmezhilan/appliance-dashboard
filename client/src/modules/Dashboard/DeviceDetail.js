@@ -16,8 +16,10 @@ import LogsIcon from "../../assets/icons/logsIcon";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import StatusIcon from "../../assets/icons/statusIcon";
 import PieChartIcon from "../../assets/icons/piechartIcon";
-import { convertToApplianceDetailsPageFormatFormat } from "./utils";
-import { getDeviceStatusColor } from "./utils";
+import {
+  getDeviceStatusColor,
+  convertToApplianceDetailsPageFormatFormat,
+} from "../utils/dashboardUtils";
 import { useParams } from "react-router-dom";
 
 const DeviceDetail = () => {
