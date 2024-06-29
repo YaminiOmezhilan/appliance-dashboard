@@ -227,6 +227,7 @@ const DeviceDetail = () => {
           sx={{
             padding: "0px",
             boxShadow: "0px 2px 2px 0px #0426520F",
+            borderRadius: "8px",
           }}
         >
           <CardContent sx={{ padding: 0 }}>
