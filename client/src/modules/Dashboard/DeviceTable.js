@@ -17,12 +17,12 @@ import {
 } from "@mui/material";
 
 import { styled } from "@mui/system";
-import FilterIcon from "../../assests/icons/filterIcon";
-import SearchIcon from "../../assests/icons/searchIcon";
+import FilterIcon from "../../assets/icons/filterIcon";
+import SearchIcon from "../../assets/icons/searchIcon";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { getDeviceStatusColor, getDownloadStatusFrequency } from "./utils";
-import CustomSelect from "../../assests/custom/CustomSelect";
+import CustomSelect from "../../assets/custom/CustomSelect";
 
 const DeviceTable = () => {
   const [page, setPage] = useState(0);

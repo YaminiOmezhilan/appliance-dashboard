@@ -11,11 +11,11 @@ import {
   Link,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import SpeedTestIcon from "../../assests/icons/speedTestIcon";
-import LogsIcon from "../../assests/icons/logsIcon";
+import SpeedTestIcon from "../../assets/icons/speedTestIcon";
+import LogsIcon from "../../assets/icons/logsIcon";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import StatusIcon from "../../assests/icons/statusIcon";
-import PieChartIcon from "../../assests/icons/piechartIcon";
+import StatusIcon from "../../assets/icons/statusIcon";
+import PieChartIcon from "../../assets/icons/piechartIcon";
 import { convertToApplianceDetailsPageFormatFormat } from "./utils";
 import { getDeviceStatusColor } from "./utils";
 import { useParams } from "react-router-dom";
