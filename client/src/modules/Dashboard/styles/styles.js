@@ -158,13 +158,14 @@ export const Title = styled(Box)({
   lineHeight: "40px",
   letterSpacing: "-0.2px",
   textAlign: "left",
+  color: "#2D3540",
 });
 
 export const StatusContainer = styled(Box)({
   display: "flex",
   gap: "16px",
   flexDirection: "column",
-  padding: "24px",
+  padding: "24px 0px",
 });
 
 export const FilterContainer = styled(Box)({
