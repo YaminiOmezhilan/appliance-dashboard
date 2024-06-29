@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import DeviceTable from "./modules/dashboard/DeviceTable";
-import DeviceDetail from "./modules/dashboard/DeviceDetail";
+import DeviceTable from "./modules/Dashboard/DeviceTable";
+import DeviceDetail from "./modules/Dashboard/DeviceDetail";
 const App = () => {
   return (
     <Routes>
