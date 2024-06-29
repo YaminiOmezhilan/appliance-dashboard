@@ -1,17 +1,3 @@
-export const data = [
-  { label: "Device Serial", value: "JTD-912312" },
-  { label: "Location", value: "Cross River Mall" },
-  { label: "City", value: "New Delhi, Delhi, India" },
-  { label: "ISP Payment Responsibility", value: "Qube" },
-  { label: "Bandwidth", value: "512 Kbps" },
-  { label: "Average Bandwidth", value: "504 Kbps" },
-  { label: "Plan Start Date", value: "1st Oct" },
-  { label: "Billing Cycle", value: "Monthly" },
-  { label: "Download Status", value: "Cancelled" },
-  { label: "OS Version", value: "2.3" },
-  { label: "Storage Available", value: "828 GB" },
-];
-
 export const getDeviceStatusColor = (status) => {
   switch (status) {
     case "Offline":
@@ -21,7 +7,7 @@ export const getDeviceStatusColor = (status) => {
   }
 };
 
-export const convertToApplianceDetailsPageFormatFormat = (object) => {
+export const convertToApplianceDetailsPageFormat = (object) => {
   return {
     "Device Serial": object.serialNo,
     Location: object.theatreName,

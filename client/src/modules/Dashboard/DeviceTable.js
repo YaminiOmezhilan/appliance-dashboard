@@ -240,8 +240,6 @@ const DeviceTable = () => {
           gap: "16px",
           flexDirection: "column",
           padding: "24px",
-          // height: "100%", // Removed to prevent enforcing a fixed height
-          overflowX: "auto", // Ensure horizontal scrolling is enabled if content exceeds width
         }}
       >
         <div

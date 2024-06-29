@@ -18,7 +18,7 @@ import StatusIcon from "../../assets/icons/statusIcon";
 import PieChartIcon from "../../assets/icons/piechartIcon";
 import {
   getDeviceStatusColor,
-  convertToApplianceDetailsPageFormatFormat,
+  convertToApplianceDetailsPageFormat,
 } from "../utils/dashboardUtils";
 import { useParams } from "react-router-dom";
 
@@ -26,7 +26,7 @@ const DeviceDetail = () => {
   const { serialNo } = useParams();
   const [appliance, setAppliance] = useState(null);
   const applianceInfo = appliance
-    ? convertToApplianceDetailsPageFormatFormat(appliance)
+    ? convertToApplianceDetailsPageFormat(appliance)
     : undefined;
   useEffect(() => {
     const fetchAppliance = async () => {
