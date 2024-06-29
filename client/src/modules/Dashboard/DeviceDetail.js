@@ -18,11 +18,11 @@ import {
 } from "./styles/styles";
 
 import { Grid, Typography, Chip, Box as MuiBox } from "@mui/material";
-import SpeedTestIcon from "../../assets/icons/SpeedTestIcon1";
-import LogsIcon from "../../assets/icons/LogIcon1";
+import SpeedTestIcon from "../../assets/icons/SpeedTestIcon";
+import LogsIcon from "../../assets/icons/LogIcon";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import StatusIcon from "../../assets/icons/StatusIcon1";
-import PieChartIcon from "../../assets/icons/PieChartIcon1";
+import StatusIcon from "../../assets/icons/StatusIcon";
+import PieChartIcon from "../../assets/icons/PieChartIcon";
 import {
   getDeviceStatusColor,
   convertToApplianceDetailsPageFormat,
