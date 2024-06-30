@@ -151,7 +151,8 @@ const DeviceTable = () => {
       try {
         const response = await fetch("http://localhost:5000/api/v1/appliances");
         const data = await response.json();
-        setAppliances(data);
+        const appliances = data.appliances
+        setAppliances(appliances);
       } catch (error) {
         console.debug("[Error] error fetching appliances data", error);
       }

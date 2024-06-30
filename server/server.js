@@ -5,8 +5,25 @@ const app = express();
 const port = 5000;
 
 app.use(cors());
+
 app.get("/api/v1/appliances", (req, res) => {
-  const briefAppliances = appliances.map((appliance) => {
+  const { deviceStatus, downloadStatus } = req.query;
+  
+  let filteredAppliances = appliances;
+
+  if (deviceStatus) {
+    filteredAppliances = filteredAppliances.filter(
+      (appliance) => appliance.deviceStatus.toLowerCase() === deviceStatus.toLowerCase()
+    );
+  }
+
+  if (downloadStatus) {
+    filteredAppliances = filteredAppliances.filter(
+      (appliance) => appliance.downloadStatus.toLowerCase() === downloadStatus.toLowerCase()
+    );
+  }
+
+  const briefAppliances = filteredAppliances.map((appliance) => {
     const {
       ispPaymentResponsibility,
       planStartDate,
@@ -16,7 +33,8 @@ app.get("/api/v1/appliances", (req, res) => {
     } = appliance;
     return briefAppliance;
   });
-  res.json(briefAppliances);
+
+  res.json({ appliances: briefAppliances });
 });
 
 app.get("/api/v1/appliance/:applianceId/info", (req, res) => {
@@ -28,6 +46,21 @@ app.get("/api/v1/appliance/:applianceId/info", (req, res) => {
   } else {
     res.status(404).json({ error: "Appliance not found" });
   }
+});
+
+app.use((err, req, res, _next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    httpStatus: 500,
+    httpCode: "Internal Server Error",
+    requestId: req.id || "N/A",
+    errors: [
+      {
+        code: "500",
+        message: "Internal Server Error"
+      }
+    ]
+  });
 });
 
 app.listen(port, () => {
