@@ -25,6 +25,7 @@ The Appliance Dashboard application provides a user interface to view and manage
 ```sh
 git clone https://github.com/YaminiOmezhilan/appliance-dashboard.git
 cd appliance-dashboard
+```
 
 ## Client
 
