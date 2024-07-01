@@ -12,6 +12,7 @@ import {
   Box,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import {
   CustomButton,
@@ -143,6 +144,9 @@ const DeviceTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [appliances, setAppliances] = useState([]);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+
   const downloadStatusOverallFrequency =
     appliances && getDownloadStatusFrequency(appliances);
 
@@ -150,11 +154,16 @@ const DeviceTable = () => {
     async function fetchAppliances() {
       try {
         const response = await fetch("http://localhost:5000/api/v1/appliances");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
         const data = await response.json();
-        const appliances = data.appliances
+        const appliances = data.appliances;
         setAppliances(appliances);
+        setLoading(false); 
       } catch (error) {
-        console.debug("[Error] error fetching appliances data", error);
+        setError("Oops! Devices not found");
+        setLoading(false); 
       }
     }
 
@@ -194,122 +203,147 @@ const DeviceTable = () => {
         <Title>Devices</Title>
       </TitleContainer>
       <StatusContainer>
-        <FilterContainer>
-          <StatusBox>
-            {downloadStatusOverallFrequency &&
-              [...downloadStatusOverallFrequency].map(([key, value]) => (
-                <StatusLabel
-                  key={key}
-                  label={`${value} ${key}`}
-                  color={getDownloadStatusColor(key)}
-                />
-              ))}
-          </StatusBox>
-        </FilterContainer>
-        <Box p={3}>
-          <TableContainer component={TableWrapper}>
-            <SearchContainer>
-              <Box display="flex" alignItems="center" sx={{ gap: "16px" }}>
-                <StyledTextField
-                  variant="outlined"
-                  size="small"
-                  placeholder="Search"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <FilterIcon />
-              </Box>
-              <CustomPagination
-                appliances={appliances}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                handleChangePage={handleChangePage}
-                handleChangeRowsPerPage={handleChangeRowsPerPage}
-              />
-            </SearchContainer>
-            <Table>
-              <TableHead>
-                <TableRow sx={{ borderBottom: "1.5px solid #E6ECF0" }}>
-                  <TableCell>Device Serial</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Bandwidth</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Download Status</TableCell>
-                  <TableCell>OS Version</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {appliances
-                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  ?.map((device) => (
-                    <TableRow key={device?.serialNo}>
-                      <StyledTableCell>{device?.serialNo}</StyledTableCell>
-                      <TableCell style={{ borderBottom: "none" }}>
-                        <StyledTypography>
-                          {device?.theatreName}
-                        </StyledTypography>
-                        <StyledTypography
-                          sx={{ color: "#084782" }}
-                          variant="body2"
-                          color="textSecondary"
-                        >
-                          {device.location.city}, {device.location.state},{" "}
-                          {device.location.country}
-                        </StyledTypography>
-                      </TableCell>
-                      <TableCell style={{ borderBottom: "none" }}>
-                        <StyledTypography>{device.bandwidth}</StyledTypography>
-                        <StyledTypography
-                          variant="body2"
-                          sx={{ color: "#69788C" }}
-                        >
-                          {device.avgBandwidth}
-                        </StyledTypography>
-                      </TableCell>
-                      <TableCell style={{ borderBottom: "none" }}>
-                        <Box display="flex" alignItems="center">
-                          <StatusCircle
-                            color={getDeviceStatusColor(device.deviceStatus)}
-                          />
-                          <StyledTypography sx={{ color: "#084782" }} ml={1}>
-                            {device.deviceStatus}
-                          </StyledTypography>
-                        </Box>
-                      </TableCell>
-                      <TableCell style={{ borderBottom: "none" }}>
-                        <Box display="flex" alignItems="center">
-                          <StatusCircle
-                            color={getDownloadStatusColor(
-                              device.downloadStatus
-                            )}
-                          />
-                          <StyledTypography sx={{ color: "#084782" }} ml={1}>
-                            {device.downloadStatus}
-                          </StyledTypography>
-                        </Box>
-                      </TableCell>
-                      <StyledTableCell>{device.osVersion}</StyledTableCell>
-                      <TableCell style={{ borderBottom: "none" }}>
-                        <CustomButton
-                          component={Link}
-                          to={`/device/${device.serialNo}`}
-                          variant="outlined"
-                        >
-                          View
-                        </CustomButton>
-                      </TableCell>
-                    </TableRow>
+        {loading ? ( 
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <CircularProgress />
+          </Box>
+        ) : error ? ( 
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Typography variant="h6">{error}</Typography>
+          </Box>
+        ) : (
+          <>
+            <FilterContainer>
+              <StatusBox>
+                {downloadStatusOverallFrequency &&
+                  [...downloadStatusOverallFrequency].map(([key, value]) => (
+                    <StatusLabel
+                      key={key}
+                      label={`${value} ${key}`}
+                      color={getDownloadStatusColor(key)}
+                    />
                   ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+              </StatusBox>
+            </FilterContainer>
+            <Box p={3}>
+              <TableContainer component={TableWrapper}>
+                <SearchContainer>
+                  <Box display="flex" alignItems="center" sx={{ gap: "16px" }}>
+                    <StyledTextField
+                      variant="outlined"
+                      size="small"
+                      placeholder="Search"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <SearchIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <FilterIcon />
+                  </Box>
+                  <CustomPagination
+                    appliances={appliances}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    handleChangePage={handleChangePage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  />
+                </SearchContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow sx={{ borderBottom: "1.5px solid #E6ECF0" }}>
+                      <TableCell>Device Serial</TableCell>
+                      <TableCell>Location</TableCell>
+                      <TableCell>Bandwidth</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Download Status</TableCell>
+                      <TableCell>OS Version</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {appliances
+                      ?.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      ?.map((device) => (
+                        <TableRow key={device?.serialNo}>
+                          <StyledTableCell>{device?.serialNo}</StyledTableCell>
+                          <TableCell style={{ borderBottom: "none" }}>
+                            <StyledTypography>
+                              {device?.theatreName}
+                            </StyledTypography>
+                            <StyledTypography
+                              sx={{ color: "#084782" }}
+                              variant="body2"
+                              color="textSecondary"
+                            >
+                              {device.location.city}, {device.location.state},{" "}
+                              {device.location.country}
+                            </StyledTypography>
+                          </TableCell>
+                          <TableCell style={{ borderBottom: "none" }}>
+                            <StyledTypography>
+                              {device.bandwidth}
+                            </StyledTypography>
+                            <StyledTypography
+                              variant="body2"
+                              sx={{ color: "#69788C" }}
+                            >
+                              {device.avgBandwidth}
+                            </StyledTypography>
+                          </TableCell>
+                          <TableCell style={{ borderBottom: "none" }}>
+                            <Box display="flex" alignItems="center">
+                              <StatusCircle
+                                color={getDeviceStatusColor(
+                                  device.deviceStatus
+                                )}
+                              />
+                              <StyledTypography
+                                sx={{ color: "#084782" }}
+                                ml={1}
+                              >
+                                {device.deviceStatus}
+                              </StyledTypography>
+                            </Box>
+                          </TableCell>
+                          <TableCell style={{ borderBottom: "none" }}>
+                            <Box display="flex" alignItems="center">
+                              <StatusCircle
+                                color={getDownloadStatusColor(
+                                  device.downloadStatus
+                                )}
+                              />
+                              <StyledTypography
+                                sx={{ color: "#084782" }}
+                                ml={1}
+                              >
+                                {device.downloadStatus}
+                              </StyledTypography>
+                            </Box>
+                          </TableCell>
+                          <StyledTableCell>{device.osVersion}</StyledTableCell>
+                          <TableCell style={{ borderBottom: "none" }}>
+                            <CustomButton
+                              component={Link}
+                              to={`/device/${device.serialNo}`}
+                              variant="outlined"
+                            >
+                              View
+                            </CustomButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </>
+        )}
       </StatusContainer>
     </>
   );
