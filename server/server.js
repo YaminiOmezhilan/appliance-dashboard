@@ -8,18 +8,20 @@ app.use(cors());
 
 app.get("/api/v1/appliances", (req, res) => {
   const { deviceStatus, downloadStatus } = req.query;
-  
+
   let filteredAppliances = appliances;
 
   if (deviceStatus) {
     filteredAppliances = filteredAppliances.filter(
-      (appliance) => appliance.deviceStatus.toLowerCase() === deviceStatus.toLowerCase()
+      (appliance) =>
+        appliance.deviceStatus.toLowerCase() === deviceStatus.toLowerCase()
     );
   }
 
   if (downloadStatus) {
     filteredAppliances = filteredAppliances.filter(
-      (appliance) => appliance.downloadStatus.toLowerCase() === downloadStatus.toLowerCase()
+      (appliance) =>
+        appliance.downloadStatus.toLowerCase() === downloadStatus.toLowerCase()
     );
   }
 
@@ -57,12 +59,14 @@ app.use((err, req, res, _next) => {
     errors: [
       {
         code: "500",
-        message: "Internal Server Error"
-      }
-    ]
+        message: "Internal Server Error",
+      },
+    ],
   });
 });
 
 app.listen(port, () => {
-  console.log(`Mock API server listening at http://localhost:${port}`);
+  console.log(
+    `Appliances Dashboard Mock API server listening at http://localhost:${port}`
+  );
 });
