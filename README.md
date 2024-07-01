@@ -32,7 +32,7 @@ cd appliance-dashboard
 The Appliance Dashboard application provides a user interface to view and manage appliances.
 ### Table of Contents
 
-- [Mock Appliance API Server](#appliance-api-server)
+- [Appliance Dashboard application](#appliance-dashboard-application)
   - [Installation](#installation)
   - [Usage](#usage)
  
