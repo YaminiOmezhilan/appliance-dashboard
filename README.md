@@ -33,19 +33,34 @@ The Appliance Dashboard application provides a user interface to view and manage
 ### Table of Contents
 
 - [Appliance Dashboard application](#appliance-dashboard-application)
-  - [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
   - [Usage](#usage)
- 
 
-### Installation
+  
+ ### Prerequisites
+ 1. Navigate to client directory:
+    ```cd client```
+
+#### Installation
 
 1. Install dependencies
   ```npm install --legacy-peer-deps```.
 
 ### Usage
 
-1. Start the server:
+1. To run development server:
   ```npm start```
+2. To run production server:
+
+```sh
+# run to get optimized production build
+  npm run build
+# install server package globally to serve static page
+  npm install -g serve
+# start the production server
+  serve -s build
+```
 
 
 ## Server
@@ -56,7 +71,8 @@ This is a mock API server for managing appliances, implemented using Express.js.
 ### Table of Contents
 
 - [Mock Appliance API Server](#mock-appliance-api-server)
-  - [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
   - [Usage](#usage)
   - [Endpoints](#endpoints)
     - [Get All Appliances](#get-all-appliances)
@@ -64,6 +80,8 @@ This is a mock API server for managing appliances, implemented using Express.js.
     - [Error Handling](#error-handling)
 
 ### Installation
+1. Navigate to server directory:
+    ```cd server```
 
 1. Install dependencies
   ```npm install```
