@@ -28,6 +28,25 @@ cd appliance-dashboard
 ```
 
 ## Client
+### Appliance Dashboard application
+The Appliance Dashboard application provides a user interface to view and manage appliances.
+### Table of Contents
+
+- [Mock Appliance API Server](#appliance-api-server)
+  - [Installation](#installation)
+  - [Usage](#usage)
+ 
+
+### Installation
+
+1. Install dependencies
+  ```npm install --legacy-peer-deps```.
+
+### Usage
+
+1. Start the server:
+  ```npm start```
+
 
 ## Server
 ### Mock Appliance API Server
@@ -37,7 +56,6 @@ This is a mock API server for managing appliances, implemented using Express.js.
 ### Table of Contents
 
 - [Mock Appliance API Server](#mock-appliance-api-server)
-  - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Endpoints](#endpoints)
